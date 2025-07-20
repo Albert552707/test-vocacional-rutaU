@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vocacional Universitario Perú</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f5;
+    }
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .question {
+      margin-bottom: 15px;
+    }
+    .result {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1f618d;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Test Vocacional Universitario - Perú</h1>
+    <p>Descubre qué carrera y universidad es ideal para ti</p>
+  </header>
+  <div class="container">
+    <h2>Responde las siguientes preguntas:</h2>
+    <form id="testForm">
+      <div class="question">
+        <label>1. ¿Te interesan más las ciencias, las humanidades o el arte?</label><br>
+        <select name="interes">
+          <option value="ingenieria">Ciencias</option>
+          <option value="humanidades">Humanidades</option>
+          <option value="arte">Arte</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>2. ¿Prefieres trabajar en oficina, al aire libre o en un laboratorio?</label><br>
+        <select name="ambiente">
+          <option value="administracion">Oficina</option>
+          <option value="agronomia">Al aire libre</option>
+          <option value="biologia">Laboratorio</option>
+        </select>
+      </div>
+      <div class="question">
+        <label>3. ¿Qué actividad disfrutas más?</label><br>
+        <select name="actividad">
+          <option value="computadoras">Programar o usar computadoras</option>
+          <option value="leer">Leer, escribir o debatir</option>
+          <option value="crear">Diseñar, dibujar o tocar música</option>
+        </select>
+      </div>
+      <button type="button" onclick="mostrarResultado()">Ver resultado</button>
+    </form>
+
+    <div class="result" id="resultado">
+      <h2>Resultado del Test:</h2>
+      <p id="carrera"></p>
+      <p id="universidad"></p>
+      <p id="descripcion"></p>
+    </div>
+  </div>
+
+  <script>
+    const opciones = {
+      ingenieria: {
+        carrera: "Ingeniería de Sistemas",
+        descripcion: "Esta carrera se enfoca en el diseño, análisis y mantenimiento de sistemas computacionales. Es ideal para quienes aman resolver problemas con tecnología.",
+        universidades: [
+          "Universidad Nacional de Ingeniería (UNI)",
+          "Pontificia Universidad Católica del Perú (PUCP)",
+          "Universidad Peruana de Ciencias Aplicadas (UPC)"
+        ]
+      },
+      humanidades: {
+        carrera: "Ciencias de la Comunicación",
+        descripcion: "Se centra en el análisis, producción y gestión de medios de comunicación. Ideal si te gusta comunicar ideas de forma creativa.",
+        universidades: [
+          "Universidad Nacional Mayor de San Marcos (UNMSM)",
+          "Universidad de Lima",
+          "Universidad Antonio Ruiz de Montoya"
+        ]
+      },
+      arte: {
+        carrera: "Diseño Gráfico",
+        descripcion: "Consiste en crear piezas visuales con herramientas digitales. Perfecto para personas creativas y expresivas.",
+        universidades: [
+          "Toulouse Lautrec",
+          "Instituto Peruano de Arte y Diseño (IPAD)",
+          "PUCP"
+        ]
+      },
+      administracion: {
+        carrera: "Administración de Empresas",
+        descripcion: "Esta carrera te prepara para liderar y tomar decisiones en organizaciones privadas o públicas.",
+        universidades: [
+          "Universidad del Pacífico",
+          "UNMSM",
+          "Universidad ESAN"
+        ]
+      },
+      agronomia: {
+        carrera: "Ingeniería Agronómica",
+        descripcion: "Estudia los procesos de cultivo, producción agrícola y el manejo sostenible del campo.",
+        universidades: [
+          "Universidad Nacional Agraria La Molina",
+          "Universidad Nacional del Altiplano",
+          "Universidad Nacional de San Antonio Abad del Cusco"
+        ]
+      },
+      biologia: {
+        carrera: "Biología",
+        descripcion: "Analiza organismos vivos, ecosistemas y procesos genéticos. Requiere mucha observación y análisis.",
+        universidades: [
+          "UNMSM",
+          "Universidad Nacional de Trujillo",
+          "PUCP"
+        ]
+      },
+      computadoras: {
+        carrera: "Ingeniería de Software",
+        descripcion: "Forma especialistas en programación, desarrollo y mantenimiento de software para empresas y usuarios.",
+        universidades: [
+          "UNI",
+          "UPC",
+          "PUCP"
+        ]
+      },
+      leer: {
+        carrera: "Derecho",
+        descripcion: "Forma profesionales capaces de analizar leyes, defender derechos y promover justicia.",
+        universidades: [
+          "UNMSM",
+          "Universidad de Piura",
+          "PUCP"
+        ]
+      },
+      crear: {
+        carrera: "Música",
+        descripcion: "Desarrolla tus habilidades como intérprete, compositor o productor musical.",
+        universidades: [
+          "Conservatorio Nacional de Música",
+          "PUCP",
+          "UPC"
+        ]
+      }
+    };
+
+    function mostrarResultado() {
+      const form = document.forms["testForm"];
+      const interes = form["interes"].value;
+      const ambiente = form["ambiente"].value;
+      const actividad = form["actividad"].value;
+
+      const resultados = [interes, ambiente, actividad];
+
+      // Determinar qué opción se repite más
+      const contador = {};
+      resultados.forEach(opcion => {
+        if (!contador[opcion]) contador[opcion] = 0;
+        contador[opcion]++;
+      });
+      let resultadoFinal = resultados[0];
+      for (let clave in contador) {
+        if (contador[clave] > contador[resultadoFinal]) {
+          resultadoFinal = clave;
+        }
+      }
+
+      const carreraInfo = opciones[resultadoFinal];
+      document.getElementById("carrera").innerText = `Carrera sugerida: ${carreraInfo.carrera}`;
+      document.getElementById("universidad").innerText = `Universidades recomendadas: ${carreraInfo.universidades.join(", ")}`;
+      document.getElementById("descripcion").innerText = carreraInfo.descripcion;
+
+      document.getElementById("resultado").style.display = "block";
+    }
+  </script>
+</body>
+</html>
